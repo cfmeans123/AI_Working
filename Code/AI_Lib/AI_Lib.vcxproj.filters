@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Inc">
+      <UniqueIdentifier>{77579208-1e38-4f3a-aabc-5070e7d711ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src">
+      <UniqueIdentifier>{d006e9ea-3e34-49cb-a139-e713fcbd1277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\Pathing">
+      <UniqueIdentifier>{a5026bbf-85bb-47f4-9f7e-110c50a930cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Pathing">
+      <UniqueIdentifier>{c105b6e7-e5ec-4c43-a509-ec50f6e63a5e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Inc\AI.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Common.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Precompiled.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\GridBasedGraph.h">
+      <Filter>Inc\Pathing</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\BFS.h">
+      <Filter>Inc\Pathing</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\DFS.h">
+      <Filter>Inc\Pathing</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Dijkstra.h">
+      <Filter>Inc\Pathing</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\AStar.h">
+      <Filter>Inc\Pathing</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Inc\Precompiled.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Inc\GridBasedGraph.cpp">
+      <Filter>Src\Pathing</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\BFS.cpp">
+      <Filter>Src\Pathing</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\DFS.cpp">
+      <Filter>Src\Pathing</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Dijkstra.cpp">
+      <Filter>Src\Pathing</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\AStar.cpp">
+      <Filter>Src\Pathing</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
