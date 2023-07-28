@@ -30,6 +30,7 @@ public:
 	int GetColumns() const { return mColumns;  }
 	int GetRows() const { return mRows; }
 
+	const AI::GridBasedGraph::Node* GetClosestNode(int x, int y) const;
 	const X::Math::Vector2 GetPixelPosition(int x, int y) const;
 
 private:

@@ -145,6 +145,19 @@ void TileMap::Render() const
 			}
 		}
 	}
+	for (int r = 0; r < mRows; ++r)
+	{
+		for (int c = 0; c < mColumns; ++c)
+		{
+			const auto node = mGraph.GetNode(c, r);
+			if (node->parent != nullptr)
+			{
+				const auto a = GetPixelPosition(node->column, node->row);
+				const auto b = GetPixelPosition(node->parent->column, node->parent->row);
+				X::DrawScreenLine(a, b, X::Colors::Orange);
+			}
+		}
+	}
 }
 
 Path TileMap::FindPathBFS(int startX, int startY, int endX, int endY)
@@ -192,7 +205,7 @@ Path TileMap::FindPathDijkstra(int startX, int startY, int endX, int endY)
 		//if neighbor 
 		if (node->column != neighbor->column && node->row != neighbor->row)
 		{
-			return 2.5f;
+			return 1.71f;
 		}
 		/*int index = ToIndex(neighbor->column, neighbor->row);
 		if (mTiles[mMap[index]])*/
@@ -222,7 +235,7 @@ Path TileMap::FindPathAStar(int startX, int startY, int endX, int endY)
 		//if neighbor 
 		if (node->column != neighbor->column && node->row != neighbor->row)
 		{
-			return 2.5f;
+			return 1.71f;
 		}
 		/*int index = ToIndex(neighbor->column, neighbor->row);
 		if (mTiles[mMap[index]])*/
@@ -232,7 +245,8 @@ Path TileMap::FindPathAStar(int startX, int startY, int endX, int endY)
 	auto getHeuristic = [](const GridBasedGraph::Node* neighbor, const GridBasedGraph::Node* endNode)->float
 	{
 		//Manhattan distance
-		return abs(neighbor->column - endNode->column) + abs(neighbor->row - endNode->row);
+		float D = 1.0f;
+		return (D * abs(neighbor->column - endNode->column) + abs(neighbor->row - endNode->row));
 	};
 
 	if (aStar.Run(mGraph, startX, startY, endX, endY, getCost, getHeuristic))
@@ -273,6 +287,27 @@ const X::Math::Vector2 TileMap::GetPixelPosition(int x, int y) const
 		(x + 0.5f) * mTileWidth,
 		(y + 0.5f) * mTileHeight
 	};
+}
+
+const AI::GridBasedGraph::Node* TileMap::GetClosestNode(int x, int y) const
+{
+	X::Math::Vector2 mousePos(x, y);
+	const AI::GridBasedGraph::Node* clickedNode = nullptr;
+	float closestDist = FLT_MAX;
+	for (int r = 0; r < mRows; ++r)
+	{
+		for (int c = 0; c < mColumns; ++c)
+		{
+			const auto node = mGraph.GetNode(c, r);
+			float distanceSqr = X::Math::DistanceSqr(GetPixelPosition(node->column, node->row), mousePos);
+			if (distanceSqr < closestDist)
+			{
+				closestDist = distanceSqr;
+				clickedNode = node;
+			}
+		}
+	}
+	return clickedNode;
 }
 
 // 2D map - 5 columns x 4 rows

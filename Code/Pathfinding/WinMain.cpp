@@ -34,6 +34,29 @@ bool GameLoop(float deltaTime)
 	if (X::IsKeyDown(X::Keys::UP))
 		position.y -= moveSpeed * deltaTime;
 
+	if (X::IsMousePressed(0))
+	{
+		int x = X::GetMouseScreenX();
+		int y = X::GetMouseScreenY();
+		auto node = tileMap.GetClosestNode(x, y);
+		if (node != nullptr)
+		{
+			startX = node->column;
+			startY = node->row;
+		}
+	}
+	if (X::IsMousePressed(1))
+	{
+		int x = X::GetMouseScreenX();
+		int y = X::GetMouseScreenY();
+		auto node = tileMap.GetClosestNode(x, y);
+		if (node != nullptr)
+		{
+			endX = node->column;
+			endY = node->row;
+		}
+	}
+
 	ImGui::Begin("TEST BOX");
 	//the ## turns it into a key so it stores it as its own individual value
 	ImGui::DragInt("StartX##", &startX, 1, 0, tileMap.GetColumns() - 1);
@@ -56,6 +79,7 @@ bool GameLoop(float deltaTime)
 	{
 		path = tileMap.FindPathAStar(startX, startY, endX, endY);
 	}
+
 	ImGui::LabelText("Test Label 1", "It works!");
 	ImGui::End();
 

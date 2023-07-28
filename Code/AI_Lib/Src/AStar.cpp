@@ -11,11 +11,10 @@ bool AStar::Run(GridBasedGraph& graph, int startX, int startY, int endX, int end
 
 	//Add start node to open list
 	auto node = graph.GetNode(startX, startY);
-	auto endNode = graph.GetNode(endX, endY);
 	mOpenList.push_back(node);
 	node->opened = true;
-
 	
+	auto endNode = graph.GetNode(endX, endY);
 
 	bool found = false;
 	//search for the end node
@@ -41,15 +40,7 @@ bool AStar::Run(GridBasedGraph& graph, int startX, int startY, int endX, int end
 				}
 				float cost = node->cost + getCost(node, neighbor);
 				if (!neighbor->opened)
-				{
-					//do a sorted insert
-					for (NodeList::iterator it = mOpenList.begin(); it != mOpenList.end(); ++it)
-					{
-						if ((*it)->cost > cost)
-						{
-							mOpenList.insert(it, neighbor);
-						}
-					}
+				{					
 					mOpenList.push_back(neighbor);
 					neighbor->opened = true;
 					neighbor->parent = node;
@@ -67,17 +58,13 @@ bool AStar::Run(GridBasedGraph& graph, int startX, int startY, int endX, int end
 		//Lambdas can be declared within parameter lists
 		auto sortCost = [](const GridBasedGraph::Node* a, const GridBasedGraph::Node* b)
 		{
-			if (a->cost == b->cost)
-			{
-				return a->heuristic < b->heuristic;
-			}
-			return a->cost < b->cost;
+				return a->cost + a->heuristic < b->cost + b->heuristic;
 		};
 		mOpenList.sort(sortCost);
 		//std::sort(mOpenList.begin(), mOpenList.end(), sortCost);
 		//add the processed node to the closed list
 		mClosedList.push_back(node);
-		node->closed;
+		node->closed = true;
 	}
 
 	return found;
