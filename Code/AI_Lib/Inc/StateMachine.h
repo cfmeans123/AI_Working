@@ -35,6 +35,14 @@ namespace AI
 			mCurrentState = mStates[index].get();
 			mCurrentState->Enter(mAgent);
 		}
+		void DebugUI()
+		{
+			if (mCurrentState != nullptr)
+			{
+				mCurrentState->DebugUI();
+			}
+		}
+
 	private:
 		AgentType& mAgent;
 		State<AgentType>* mCurrentState = nullptr;

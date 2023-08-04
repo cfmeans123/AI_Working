@@ -4,7 +4,7 @@
 void Enemy::Initialize()
 {
 	mLocation = Enemy::LocationState::Alleys;
-	mActive = false;
+	mActive = true;
 	mEnemyFound = false;
 	mHealth = 100.0f;
 	mFatigue = 0.0f;
@@ -15,6 +15,8 @@ void Enemy::Initialize()
 	mStateMachine->AddState<EngageState>();
 	mStateMachine->AddState<RecoverState>();
 	mStateMachine->AddState<DestroyState>();
+
+	mStateMachine->ChangeState(Idle);
 
 }
 
@@ -42,10 +44,7 @@ float Enemy::IsAlive() const
 }
 bool Enemy::IsPatrolComplete() const
 {
-	/*if (mStopWatch->tick() <= std::chrono::milliseconds(0))
-	{
-		return true;
-	}*/
+
 	return false;
 }
 bool Enemy::Rested() const
@@ -54,13 +53,11 @@ bool Enemy::Rested() const
 }
 bool Enemy::PatrolHasStarted()
 {
-	return 0;
-	//return mStopWatch->tick().count() > 0.0f;
+	return false;
 }
 bool Enemy::PatrolHasComplete()
 {
-	return 0;
-	//return mStopWatch->tick().count() <= 0.0f;
+	return false;
 }
 
 void Enemy::IncreaseFatigue()
@@ -70,5 +67,24 @@ void Enemy::IncreaseFatigue()
 
 void Enemy::StartTimer()
 {
-	//*mStopWatch = 3.0f;
+	
+	
+}
+
+void Enemy::IterateTimer(float dt)
+{
+	
+}
+
+void Enemy::ChangeActiveState()
+{
+	mActive = !mActive;
+	myTimer.ResetTimer(10.0f);
+}
+
+void Enemy::DebugUI()
+{
+	mStateMachine->DebugUI();
+	ImGui::Text("Your current fatigue is [%f]", mFatigue);
+	ImGui::Text("Current timer holds: [%f]", myTimer.mTime);
 }

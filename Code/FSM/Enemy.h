@@ -1,5 +1,6 @@
 #pragma once
 #include <AI.h>
+#include "Stopwatch.h"
 
 
 enum EnemyState
@@ -37,8 +38,14 @@ public:
 	float IsAlive() const;
 	float GetHealth() { return mHealth; }
 
+	void ChangeActiveState();
 	void IncreaseFatigue();
 	void StartTimer();
+	void IterateTimer(float dt);
+	
+	void DebugUI();
+
+	Stopwatch myTimer;
 
 
 private:
@@ -48,7 +55,6 @@ private:
 	bool mEnemyFound = false;
 	float mHealth;
 	float mFatigue;
-	//Stopwatch<float>* mStopWatch;
 };
 
 
