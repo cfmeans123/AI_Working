@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31402.337
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "X", "X\X.vcxproj", "{6682BFD4-C79F-49BD-A114-6EE8FB79E8C3}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pathfinding", "Pathfinding\Pathfinding.vcxproj", "{F1093807-7046-4870-B822-4E83C9B6A6B6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AI_Lib", "AI_Lib\AI_Lib.vcxproj", "{65B56B2B-DE52-410F-A784-566AF4F94226}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FSM", "FSM\FSM.vcxproj", "{0E94A01B-5772-4D9F-933D-1CB035D7DF17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,14 @@ Global
 		{65B56B2B-DE52-410F-A784-566AF4F94226}.Release|x64.Build.0 = Release|x64
 		{65B56B2B-DE52-410F-A784-566AF4F94226}.Release|x86.ActiveCfg = Release|Win32
 		{65B56B2B-DE52-410F-A784-566AF4F94226}.Release|x86.Build.0 = Release|Win32
+		{0E94A01B-5772-4D9F-933D-1CB035D7DF17}.Debug|x64.ActiveCfg = Debug|x64
+		{0E94A01B-5772-4D9F-933D-1CB035D7DF17}.Debug|x64.Build.0 = Debug|x64
+		{0E94A01B-5772-4D9F-933D-1CB035D7DF17}.Debug|x86.ActiveCfg = Debug|Win32
+		{0E94A01B-5772-4D9F-933D-1CB035D7DF17}.Debug|x86.Build.0 = Debug|Win32
+		{0E94A01B-5772-4D9F-933D-1CB035D7DF17}.Release|x64.ActiveCfg = Release|x64
+		{0E94A01B-5772-4D9F-933D-1CB035D7DF17}.Release|x64.Build.0 = Release|x64
+		{0E94A01B-5772-4D9F-933D-1CB035D7DF17}.Release|x86.ActiveCfg = Release|Win32
+		{0E94A01B-5772-4D9F-933D-1CB035D7DF17}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +109,7 @@ Global
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5} = {856ED680-E9A4-400F-ADFF-D3C492DCA608}
 		{F1093807-7046-4870-B822-4E83C9B6A6B6} = {146A795E-C8E7-4258-9AD4-8E45F8B0F299}
 		{65B56B2B-DE52-410F-A784-566AF4F94226} = {7021208A-2477-419B-A0A3-A79CA757E822}
+		{0E94A01B-5772-4D9F-933D-1CB035D7DF17} = {146A795E-C8E7-4258-9AD4-8E45F8B0F299}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D84BED7-7031-4090-B4D3-57A9E4C0998B}

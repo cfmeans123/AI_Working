@@ -13,6 +13,12 @@
     <Filter Include="Src\Pathing">
       <UniqueIdentifier>{c105b6e7-e5ec-4c43-a509-ec50f6e63a5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Inc\FSM">
+      <UniqueIdentifier>{d644c7ed-f291-4b4b-9a6b-9ed786eca5e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\FSM">
+      <UniqueIdentifier>{ac7b420d-5095-42a4-bdb5-20b1483c0cca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\AI.h">
@@ -38,6 +44,12 @@
     </ClInclude>
     <ClInclude Include="Inc\AStar.h">
       <Filter>Inc\Pathing</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\StateMachine.h">
+      <Filter>Inc\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\State.h">
+      <Filter>Inc\FSM</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
