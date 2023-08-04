@@ -14,12 +14,12 @@ public:
 	{
 		agent.SetLocation(Enemy::LocationState::Alleys);
 	}
-	void Execute(Enemy& agent, float deltaTime) override
+	void Update(Enemy& agent, float deltaTime) override
 	{
-		if (agent.mActive)
+		/*if (agent.mActive)
 		{
 			agent.ChangeState(EnemyStates::Patrol);
-		}
+		}*/
 	}
 	void Exit(Enemy& agent) override
 	{
@@ -34,7 +34,7 @@ public:
 	{
 
 	}
-	void Execute(Enemy& agent, float deltaTime) override
+	void Update(Enemy& agent, float deltaTime) override
 	{
 
 	}
@@ -51,7 +51,7 @@ public:
 	{
 
 	}
-	void Execute(Enemy& agent, float deltaTime) override
+	void Update(Enemy& agent, float deltaTime) override
 	{
 
 	}
@@ -68,7 +68,7 @@ public:
 	{
 
 	}
-	void Execute(Enemy& agent, float deltaTime) override
+	void Update(Enemy& agent, float deltaTime) override
 	{
 
 	}
@@ -84,7 +84,7 @@ public:
 	{
 
 	}
-	void Execute(Enemy& agent, float deltaTime) override
+	void Update(Enemy& agent, float deltaTime) override
 	{
 
 	}

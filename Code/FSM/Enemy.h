@@ -1,9 +1,8 @@
 #pragma once
 #include <AI.h>
-#include "EnemyStates.h"
 
 
-enum EnemyStates
+enum EnemyState
 {
 	Idle,
 	Patrol,
@@ -26,7 +25,7 @@ public:
 	void Initialize();
 	void Terminate();
 	void Update(float dt);
-	void ChangeState(EnemyStates newState);
+	void ChangeState(EnemyState newState);
 	void SetLocation(LocationState loc);
 	bool IsActive() { return mActive; }
 	bool IsPatrolComplete() const;

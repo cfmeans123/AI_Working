@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "EnemyStates.h"
 
 void Enemy::Initialize()
 {
@@ -27,7 +28,7 @@ void Enemy::Update(float dt)
 {
 	mStateMachine->Update(dt);
 }
-void Enemy::ChangeState(EnemyStates newState)
+void Enemy::ChangeState(EnemyState newState)
 {
 	mStateMachine->ChangeState((int)newState);
 }
