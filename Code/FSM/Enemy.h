@@ -35,13 +35,18 @@ public:
 	bool PatrolHasComplete();
 
 
-	float IsAlive() const;
+	bool IsAlive() const;
 	float GetHealth() { return mHealth; }
-
+	void TakeDamage(int dam);
+	void ResetHealth();
+	void ResetFatigue();
+	int GetDamageCap() { return mDamageMax; }
+	float GetFatigue() { return mFatigue; }
 	void ChangeActiveState();
-	void IncreaseFatigue();
+	void IncreaseFatigue(float val);
 	void StartTimer();
 	void IterateTimer(float dt);
+
 	
 	void DebugUI();
 
@@ -54,6 +59,8 @@ private:
 	bool mActive = false;
 	bool mEnemyFound = false;
 	float mHealth;
+	float mHealthCap;
+	int mDamageMax;
 	float mFatigue;
 };
 

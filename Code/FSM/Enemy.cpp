@@ -7,7 +7,9 @@ void Enemy::Initialize()
 	mActive = true;
 	mEnemyFound = false;
 	mHealth = 100.0f;
+	mHealthCap = 100.0f;
 	mFatigue = 0.0f;
+	mDamageMax = 25;
 	mStateMachine = new AI::StateMachine<Enemy>(*this);
 
 	mStateMachine->AddState<IdleState>();
@@ -15,9 +17,7 @@ void Enemy::Initialize()
 	mStateMachine->AddState<EngageState>();
 	mStateMachine->AddState<RecoverState>();
 	mStateMachine->AddState<DestroyState>();
-
 	mStateMachine->ChangeState(Idle);
-
 }
 
 
@@ -38,10 +38,25 @@ void Enemy::SetLocation(Enemy::LocationState loc)
 {
 	mLocation = loc;
 }
-float Enemy::IsAlive() const
+void Enemy::TakeDamage(int dam)
+{
+	mHealth -= dam;
+}
+
+void Enemy::ResetHealth()
+{
+	mHealth = mHealthCap;
+}
+void Enemy::ResetFatigue()
+{
+	mFatigue = 0.0f;
+}
+
+bool Enemy::IsAlive() const
 {
 	return mHealth > 0.0f;
 }
+
 bool Enemy::IsPatrolComplete() const
 {
 
@@ -60,31 +75,33 @@ bool Enemy::PatrolHasComplete()
 	return false;
 }
 
-void Enemy::IncreaseFatigue()
+void Enemy::IncreaseFatigue(float val)
 {
-	mFatigue += 1.0f;
+	mFatigue += val;
 }
 
-void Enemy::StartTimer()
-{
-	
-	
-}
-
-void Enemy::IterateTimer(float dt)
-{
-	
-}
 
 void Enemy::ChangeActiveState()
 {
 	mActive = !mActive;
 	myTimer.ResetTimer(10.0f);
+	
 }
 
 void Enemy::DebugUI()
 {
 	mStateMachine->DebugUI();
 	ImGui::Text("Your current fatigue is [%f]", mFatigue);
-	ImGui::Text("Current timer holds: [%f]", myTimer.mTime);
+	if (myTimer.GetActiveState())
+	{
+		ImGui::Text("Current timer holds: [%f]", myTimer.mTime);
+	}
+}
+
+void Enemy::StartTimer()
+{
+}
+
+void Enemy::IterateTimer(float dt)
+{
 }
