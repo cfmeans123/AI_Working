@@ -12,10 +12,11 @@
 class IdleState : public AI::State<Enemy> 
 {
 public:
-	bool idleTimerComplete = false;
+	bool idleTimerComplete;
 
 	void Enter(Enemy& agent) override
 	{
+		idleTimerComplete = false;
 		agent.SetLocation(Enemy::LocationState::Alleys);		
 	}
 	void Update(Enemy& agent, float deltaTime) override
@@ -133,12 +134,13 @@ public:
 		f_max = 1;
 		f = 0;
 		damCap = agent.GetDamageCap();
-		//get current enemy stats
+		debugHealth = agent.GetHealth();
+		
+		//get current enemy stats...
 		otherDamageMax = rand() % 20 + 5;
 		/*while (otherDamageMax == 0){
 			otherDamageMax = rand() & 25;
 		}*/
-
 		otherHealth = 100;
 		otherAlive = true;
 	}
@@ -224,16 +226,37 @@ public:
 class DestroyState : public AI::State<Enemy>
 {
 public:
+	bool destroyTimerComplete;
 	void Enter(Enemy& agent) override
 	{
-
+		destroyTimerComplete = false;
 	}
 	void Update(Enemy& agent, float deltaTime) override
 	{
+		if (agent.IsActive())
+		{
+			if (!agent.myTimer.GetActiveState())
+			{
+				agent.myTimer.ResetTimer(5.0f);
+			}
+			else
+			{
+				agent.myTimer.mTime -= deltaTime;
+				if (agent.myTimer.mTime <= 0.0f)
+				{
+					destroyTimerComplete = true;
+				}
+			}
+			if (destroyTimerComplete)
+			{
+				agent.ChangeState(EnemyState::Idle);
+			}
+		}
 	}
 	void Exit(Enemy& agent) override
 	{
-
+		agent.ResetHealth();
+		agent.ResetFatigue();
 	}
 	void DebugUI() override
 	{
