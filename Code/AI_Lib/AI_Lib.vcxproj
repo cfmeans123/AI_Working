@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -160,6 +160,8 @@
     <ClInclude Include="Inc\Precompiled.h" />
     <ClInclude Include="Inc\State.h" />
     <ClInclude Include="Inc\StateMachine.h" />
+    <ClInclude Include="Inc\SteeringBehavior.h" />
+    <ClInclude Include="Inc\SteeringModule.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Inc\GridBasedGraph.cpp" />
@@ -173,6 +175,7 @@
     <ClCompile Include="Src\DFS.cpp" />
     <ClCompile Include="Src\Dijkstra.cpp" />
     <ClCompile Include="Src\Entity.cpp" />
+    <ClCompile Include="Src\SteeringModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\X\X.vcxproj">
