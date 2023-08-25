@@ -14,7 +14,10 @@ X::Math::Vector2 SteeringModule::Calculate()
 	X::Math::Vector2 totalForce;
 	for (auto& behavior : mBehaviors)
 	{
-		totalForce += behavior->Calculate(mAgent) * behavior->GetWeight();
+		if (behavior->GetActive())
+		{
+			totalForce += behavior->Calculate(mAgent) * behavior->GetWeight();
+		}
 	}
 	return totalForce;
 

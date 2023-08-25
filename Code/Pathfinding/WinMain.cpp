@@ -11,6 +11,8 @@ int endY = 0;
 X::TextureId textureId;
 X::Math::Vector2 position;
 
+
+
 //--------------------------------------------------
 
 void GameInit()
