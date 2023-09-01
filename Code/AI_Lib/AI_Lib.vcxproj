@@ -160,6 +160,7 @@
     <ClInclude Include="Inc\EvadeBehavior.h" />
     <ClInclude Include="Inc\FleeBehavior.h" />
     <ClInclude Include="Inc\GridBasedGraph.h" />
+    <ClInclude Include="Inc\GroupBehavior.h" />
     <ClInclude Include="Inc\Precompiled.h" />
     <ClInclude Include="Inc\PursuitBehavior.h" />
     <ClInclude Include="Inc\SeekBehavior.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="Src\Entity.cpp" />
     <ClCompile Include="Src\EvadeBehavior.cpp" />
     <ClCompile Include="Src\FleeBehavior.cpp" />
+    <ClCompile Include="Src\GroupBehavior.cpp" />
     <ClCompile Include="Src\PursuitBehavior.cpp" />
     <ClCompile Include="Src\SeekBehavior.cpp" />
     <ClCompile Include="Src\SteeringModule.cpp" />

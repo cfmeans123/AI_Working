@@ -2,5 +2,6 @@
 
 enum Types
 {
-	PeonId = 0
+	None = 0,
+	PeonId = 1
 };

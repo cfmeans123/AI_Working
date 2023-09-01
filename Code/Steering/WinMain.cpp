@@ -2,6 +2,7 @@
 #include <XEngine.h> // <> for external includes, "" for internal includes
 #include "../AI_Lib/Inc/AI.h"
 #include "Peon.h"
+#include "TypeIds.h"
 //--------------------------------------------------
 AI::AIWorld aiWorld;
 std::vector<std::unique_ptr<Peon>> peons;
@@ -129,13 +130,27 @@ bool GameLoop(float deltaTime)
 	aiWorld.Update();
 	for (auto& peon : peons)
 	{
+		auto neighbors = aiWorld.GetEntitiesInRange({ peon->position, 100.0f }, Types::PeonId);
+		peon->neighbors.clear();
+		for (auto& n : neighbors)
+		{
+			if (n != peon.get())
+			{
+				peon->neighbors.push_back(static_cast<AI::Agent*>(n));
+			}
+		}
+	}
+	for (auto& peon : peons)
+	{
 		peon->Update(deltaTime);
 	}
+	
+	
+	targetPeon.Render();
 	for (auto& peon : peons)
 	{
 		peon->Render();
 	}
-	targetPeon.Render();
 	const bool quit = X::IsKeyPressed(X::Keys::ESCAPE);
 	return quit;
 }

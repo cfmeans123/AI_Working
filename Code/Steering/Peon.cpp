@@ -20,15 +20,22 @@ void Peon::Load()
 	mPursuitBehavior = mSteeringModule->AddBehavior<AI::PursuitBehavior>();
 	mFleeBehavior = mSteeringModule->AddBehavior<AI::FleeBehavior>();
 	mSeekBehavior = mSteeringModule->AddBehavior<AI::SeekBehavior>();
+	mSeparationBehavior = mSteeringModule->AddBehavior<AI::SeparationBehavior>();
+	mAlignmentBehavior = mSteeringModule->AddBehavior<AI::AlignmentBehavior>();
+	mCohesionBehavior = mSteeringModule->AddBehavior<AI::CohesionBehavior>();
 
 	mWanderBehavior->SetActive(true);
-
+	mSeparationBehavior->SetActive(true);
+	mAlignmentBehavior->SetActive(true);
 	for (size_t i = 0; i < mTextureIds.size(); ++i)
 	{
 		char name[128];
 		sprintf_s(name, "scv_%02i.png", i+1);
 		mTextureIds[i] = X::LoadTexture(name);
 	}
+
+	float spriteWidth = X::GetSpriteWidth(mTextureIds[0]);
+	radius = (spriteWidth * 0.5f) + 30.0f;
 }
 
 void Peon::Unload()
@@ -89,4 +96,7 @@ void Peon::ShowDebug(bool debug)
 	mFleeBehavior->ShowDebug(debug);
 	mSeekBehavior->ShowDebug(debug);
 	mWanderBehavior->ShowDebug(debug);
+	mSeparationBehavior->ShowDebug(debug);
+	mAlignmentBehavior->ShowDebug(debug);
+	mCohesionBehavior->ShowDebug(debug);
 }

@@ -16,12 +16,19 @@
 #include "Agent.h"
 #include "Entity.h"
 
+
+
 //Steering
 #include "SteeringBehavior.h"
 #include "SteeringModule.h"
 #include "WanderBehavior.h"
 #include "PursuitBehavior.h"
+
+//Individual
 #include "ArriveBehavior.h"
 #include "SeekBehavior.h"
 #include "FleeBehavior.h"
 #include "EvadeBehavior.h"
+
+//group
+#include "GroupBehavior.h"
