@@ -2,6 +2,8 @@
 
 #include "../AI_Lib/Inc/AI.h"
 
+
+class VisualSensor;
 class Peon : public AI::Agent
 {
 public:
@@ -24,6 +26,7 @@ public:
 
 private:
 	std::unique_ptr<AI::SteeringModule> mSteeringModule;
+	std::unique_ptr<AI::PerceptionModule> mPerceptionModule;
 	AI::WanderBehavior* mWanderBehavior = nullptr;
 	AI::ArriveBehavior* mArriveBehavior = nullptr;
 	AI::EvadeBehavior* mEvadeBehavior = nullptr;
@@ -34,7 +37,7 @@ private:
 	AI::AlignmentBehavior* mAlignmentBehavior = nullptr;
 	AI::CohesionBehavior* mCohesionBehavior = nullptr;
 
-
+	VisualSensor* mVisualSensor = nullptr;
 	std::array<X::TextureId, 16> mTextureIds;
 
 };

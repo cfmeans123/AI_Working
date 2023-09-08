@@ -7,13 +7,24 @@ namespace AI
 	class AIWorld
 	{
 	public:
+		using Obstacles = std::vector<X::Math::Circle>;
+		using Walls = std::vector<X::Math::LineSegment>;
+
 		void Initialize();
 		void Update();
 
 		void Register(Entity* entity);
 		void Unregister(Entity* entity);
 
+		void AddObstacle(const X::Math::Circle& obstacle);
+		void AddWall(const X::Math::LineSegment& wall);
+
+		bool HasLineOfSight(const X::Math::LineSegment& lineSegment) const;
+
 		EntityPtrs GetEntities() const { return mEntities; }
+		const Obstacles& GetObstacles() { return mObstacles; }
+		const Walls& GetWalls() { return mWalls; }
+		
 		EntityPtrs GetEntitiesInRange(const X::Math::Circle& range, uint32_t typeId);
 
 		uint32_t GetNextId() const
@@ -25,5 +36,8 @@ namespace AI
 	private:
 		mutable uint32_t mNextId = 0;
 		EntityPtrs mEntities;
+
+		Obstacles mObstacles;
+		Walls mWalls;
 	};
 }

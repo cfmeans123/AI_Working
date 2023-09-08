@@ -25,6 +25,18 @@
     <Filter Include="Src\Steering">
       <UniqueIdentifier>{171c7bc6-6552-4dcf-82dc-cbcdffa8106d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Inc\Perception">
+      <UniqueIdentifier>{047a5dea-ba69-4319-91e0-fd5f5a5d4c33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Perception">
+      <UniqueIdentifier>{9e825a76-361f-4a06-89cc-b3ab3efb15fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\GoalBasedDecision">
+      <UniqueIdentifier>{f46b867d-657e-4e32-8009-2e6472a543fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\GoalBasedDecision">
+      <UniqueIdentifier>{caa62487-104f-4b6e-8d31-2b966b93aecf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\AI.h">
@@ -93,6 +105,27 @@
     <ClInclude Include="Inc\GroupBehavior.h">
       <Filter>Inc\Steering</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\MemoryRecord.h">
+      <Filter>Inc\Perception</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\PerceptionModule.h">
+      <Filter>Inc\Perception</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Sensor.h">
+      <Filter>Inc\Perception</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\DecisionModule.h">
+      <Filter>Inc\GoalBasedDecision</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Goal.h">
+      <Filter>Inc\GoalBasedDecision</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\GoalComposite.h">
+      <Filter>Inc\GoalBasedDecision</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Strategy.h">
+      <Filter>Inc\GoalBasedDecision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Inc\Precompiled.cpp">
@@ -145,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="Src\GroupBehavior.cpp">
       <Filter>Src\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PerceptionModule.cpp">
+      <Filter>Src\Perception</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GoalComposite.cpp">
+      <Filter>Src\GoalBasedDecision</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

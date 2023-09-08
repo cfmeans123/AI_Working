@@ -3,9 +3,13 @@
   <ItemGroup>
     <ClInclude Include="TypeIds.h" />
     <ClInclude Include="Peon.h" />
+    <ClInclude Include="Mineral.h" />
+    <ClInclude Include="VisualSensor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="Peon.cpp" />
+    <ClCompile Include="VisualSensor.cpp" />
+    <ClCompile Include="Mineral.cpp" />
   </ItemGroup>
 </Project>

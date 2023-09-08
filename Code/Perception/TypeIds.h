@@ -2,6 +2,7 @@
 
 enum Types
 {
-	None = 0,
-	PeonId = 1
+	Invalid = 0,
+	PeonId = 1,
+	MineralId = 2
 };

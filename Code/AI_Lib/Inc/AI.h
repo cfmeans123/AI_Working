@@ -32,3 +32,7 @@
 
 //group
 #include "GroupBehavior.h"
+
+//Perception
+#include "MemoryRecord.h"
+#include "PerceptionModule.h"

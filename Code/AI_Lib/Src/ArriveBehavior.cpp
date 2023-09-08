@@ -16,7 +16,7 @@ X::Math::Vector2 ArriveBehavior::Calculate(Agent& agent)
 	if (distToDest > 1.0f)
 	{
 		const float decelTweaker = agent.mass * 1.5;
-		speed = distToDest / ((float)deceleration + 1.0f) * decelTweaker;
+		speed = distToDest / ((float)mDeceleration + 1.0f) * decelTweaker;
 		speed = X::Math::Min(speed, agent.maxSpeed);
 	}
 

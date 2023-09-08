@@ -1,20 +1,27 @@
 #include <XEngine.h>
 #include <ImGui/Inc/imgui.h>
+#include "Mineral.h"
 #include "../Perception/Peon.h"
 #include "../Perception/TypeIds.h"
 //--------------------------------------------------
 AI::AIWorld aiWorld;
 std::vector<std::unique_ptr<Peon>> peons;
+std::vector<std::unique_ptr<Mineral>> minerals;
 
+
+bool showDebug = false;
 float wanderJitter = 5.0f;
 float wanderRadius = 20.0f;
 float wanderDistance = 50.0f;
 
-AI::ArriveBehavior::Deceleration deceleration = AI::ArriveBehavior::Deceleration::Normal;
-
-bool showDebug = false;
+float viewRange = 300.0f;
+float viewAngle = 45.0f;
 
 int activeBehavior = 0;
+
+AI::ArriveBehavior::Deceleration deceleration = AI::ArriveBehavior::Deceleration::Normal;
+
+
 
 void SpawnPeon()
 {
@@ -39,6 +46,25 @@ void GameInit()
 {
 	aiWorld.Initialize();
 	SpawnPeon();
+
+	for (int i = 0; i < 10; ++i)
+	{
+		auto& mineral = minerals.emplace_back(std::make_unique<Mineral>(aiWorld));
+		mineral->Initialize();
+	}
+	aiWorld.AddObstacle({230.0f, 300.0f, 50.0f});
+
+	X::Math::Vector2 topLeft(500.0f, 100.0f);
+	X::Math::Vector2 topRight(600.0f, 100.0f);
+	X::Math::Vector2 bottomLeft(500.0f, 600.0f);
+	X::Math::Vector2 bottomRight(600.0f, 600.0f);
+	aiWorld.AddWall({ topLeft, topRight });
+	aiWorld.AddWall({ topRight, bottomRight });
+	aiWorld.AddWall({ bottomLeft, bottomRight });
+	aiWorld.AddWall({ bottomLeft, topLeft });
+
+
+
 }
 
 bool GameLoop(float deltaTime)
@@ -60,24 +86,16 @@ bool GameLoop(float deltaTime)
 		}
 	}
 	static const char* behaviors[] = {
-		"Flee",
-		"Seek",
 		"Wander",
-		"Arrive",
-		"Pursuit",
-		"Evade"
+		"Seek"
 	};
 
 	if (ImGui::Combo("ActiveBehavior##", &activeBehavior, behaviors, std::size(behaviors)))
 	{
 		for (auto& peon : peons)
 		{
-			peon->SetFlee(activeBehavior == 0);
+			peon->SetWander(activeBehavior == 0);
 			peon->SetSeek(activeBehavior == 1);
-			peon->SetWander(activeBehavior == 2);
-			peon->SetArrive(activeBehavior == 3);
-			peon->SetPursuit(activeBehavior == 4);
-			peon->SetEvade(activeBehavior == 5);
 		}
 	}
 
@@ -88,48 +106,16 @@ bool GameLoop(float deltaTime)
 		ImGui::DragFloat("Radius##", &wanderRadius, 0.1f, 0.1f, 100.0f);
 		ImGui::DragFloat("Distance##", &wanderDistance, 0.1f, 0.1f, 500.0f);
 	}
-	if (ImGui::CollapsingHeader("Arrive##Settings", ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		static const char* decelerationSpeeds[] = {
-		"Fast",
-		"Normal",
-		"Slow"
-		};
 
-		int decel = static_cast<int>(deceleration);
-		if (ImGui::Combo("Deceleration##", &decel, decelerationSpeeds, std::size(decelerationSpeeds)))
-		{
-			deceleration = static_cast<AI::ArriveBehavior::Deceleration>(decel);
-		}
+	if (ImGui::CollapsingHeader("Visual##Sensor", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::DragFloat("View##Range", &viewRange, 1.0f, 100.0f, 1000.0f);
+		ImGui::DragFloat("View##Angle", &viewAngle, 1.0f, 10.0f, 100.0f);
 	}
+
 	ImGui::End();
 
-	if (X::IsMousePressed(X::Mouse::LBUTTON))
-	{
-		const auto mouseX = static_cast<float>(X::GetMouseScreenX());
-		const auto mouseY = static_cast<float>(X::GetMouseScreenY());
-		const auto destination = X::Math::Vector2(mouseX, mouseY);
-
-		for (auto& peon : peons)
-		{
-			peon->destination = destination;
-		}
-	}
-
-
 	aiWorld.Update();
-	for (auto& peon : peons)
-	{
-		auto neighbors = aiWorld.GetEntitiesInRange({ peon->position, 100.0f }, Types::PeonId);
-		peon->neighbors.clear();
-		for (auto& n : neighbors)
-		{
-			if (n != peon.get())
-			{
-				peon->neighbors.push_back(static_cast<AI::Agent*>(n));
-			}
-		}
-	}
 	for (auto& peon : peons)
 	{
 		peon->Update(deltaTime);
@@ -139,6 +125,23 @@ bool GameLoop(float deltaTime)
 	{
 		peon->Render();
 	}
+	for (auto& mineral : minerals)
+	{
+		mineral->Render();
+	}
+
+	auto& obstacles = aiWorld.GetObstacles();
+	for (auto& obstacle : obstacles)
+	{
+		X::DrawScreenCircle(obstacle.center, obstacle.radius, X::Colors::Gray);
+	}
+
+	auto& walls = aiWorld.GetWalls();
+	for (auto& wall : walls)
+	{
+		X::DrawScreenLine(wall.from, wall.to, X::Colors::Gray);
+	}
+
 	const bool quit = X::IsKeyPressed(X::Keys::ESCAPE);
 	return quit;
 }
@@ -155,7 +158,7 @@ void GameCleanup()
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	X::Start("Steering");
+	X::Start("Perception");
 	GameInit();
 
 	X::Run(GameLoop);

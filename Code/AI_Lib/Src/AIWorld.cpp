@@ -15,7 +15,6 @@ void AIWorld::Register(Entity* entity)
 {
 	XASSERT(std::find(mEntities.begin(), mEntities.end(), entity) == mEntities.end(), "AIWorld: entity something");
 	mEntities.push_back(entity);
-
 }
 void AIWorld::Unregister(Entity* entity)
 {
@@ -24,6 +23,33 @@ void AIWorld::Unregister(Entity* entity)
 	{
 		mEntities.erase(iter);
 	}
+}
+void AIWorld::AddObstacle(const X::Math::Circle& obstacle)
+{
+	mObstacles.push_back(obstacle);
+}
+void AIWorld::AddWall(const X::Math::LineSegment& wall)
+{
+	mWalls.push_back(wall);
+}
+
+bool AIWorld::HasLineOfSight(const X::Math::LineSegment& lineSegment) const
+{
+	for (auto& wall : mWalls)
+	{
+		if (X::Math::Intersect(lineSegment, wall))
+		{
+			return false;
+		}
+	}
+	for (auto& obstacle : mObstacles)
+	{
+		if (X::Math::Intersect(lineSegment, obstacle))
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 EntityPtrs AIWorld::GetEntitiesInRange(const X::Math::Circle& range, uint32_t typeId)
