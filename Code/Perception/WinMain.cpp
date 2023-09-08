@@ -1,12 +1,10 @@
-#include "ImGui/Inc/imgui.h"
-#include <XEngine.h> // <> for external includes, "" for internal includes
-#include "../AI_Lib/Inc/AI.h"
-#include "Peon.h"
-#include "TypeIds.h"
+#include <XEngine.h>
+#include <ImGui/Inc/imgui.h>
+#include "../Perception/Peon.h"
+#include "../Perception/TypeIds.h"
 //--------------------------------------------------
 AI::AIWorld aiWorld;
 std::vector<std::unique_ptr<Peon>> peons;
-Peon targetPeon(aiWorld);
 
 float wanderJitter = 5.0f;
 float wanderRadius = 20.0f;
@@ -23,7 +21,6 @@ void SpawnPeon()
 	auto& peon = peons.emplace_back(std::make_unique<Peon>(aiWorld));
 	peon->Load();
 	peon->ShowDebug(showDebug);
-	peon->target = &targetPeon;
 
 	const float screenWidth = X::GetScreenWidth();
 	const float screenHeight = X::GetScreenHeight();
@@ -41,13 +38,6 @@ void KillPeon()
 void GameInit()
 {
 	aiWorld.Initialize();
-
-	targetPeon.Load();
-	targetPeon.SetWander(true);
-	targetPeon.SetFlee(false);
-	targetPeon.SetSeek(false);
-	targetPeon.position = X::RandomVector2({ 100.0f, 100.0f }, { X::GetScreenWidth()  - 100.0f, X::GetScreenHeight() - 100.0f});
-
 	SpawnPeon();
 }
 
@@ -145,8 +135,6 @@ bool GameLoop(float deltaTime)
 		peon->Update(deltaTime);
 	}
 	
-	
-	targetPeon.Render();
 	for (auto& peon : peons)
 	{
 		peon->Render();
@@ -157,7 +145,6 @@ bool GameLoop(float deltaTime)
 
 void GameCleanup()
 {
-	targetPeon.Unload();
 	for (auto& peon : peons)
 	{
 		peon->Unload();
