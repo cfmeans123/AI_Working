@@ -20,7 +20,7 @@ X::Math::Vector2 SeparationBehavior::Calculate(Agent& agent)
 				dirToNeighbor /= distance;
 				if (X::Math::Dot(dirToNeighbor, agent.heading) > 0.0f)
 				{
-					float desiredSpeed = X::Math::Min((overlapDistance / agent.radius) * agent.maxSpeed * forceMultiplier, agent.maxSpeed));
+					float desiredSpeed = X::Math::Min((overlapDistance / agent.radius) * agent.maxSpeed * forceMultiplier, agent.maxSpeed);
 					separationForce += (-dirToNeighbor * desiredSpeed);
 				}
 			}
@@ -63,7 +63,7 @@ X::Math::Vector2 AlignmentBehavior::Calculate(Agent& agent)
 	return alignmentForce;
 }
 
-X::Math::Vector2 AlignmentBehavior::Calculate(Agent& agent)
+X::Math::Vector2 CohesionBehavior::Calculate(Agent& agent)
 {
 	X::Math::Vector2 cohesionForce;
 	X::Math::Vector2 centerOfMass;
