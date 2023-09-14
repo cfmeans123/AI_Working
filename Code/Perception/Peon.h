@@ -2,6 +2,16 @@
 
 #include "../AI_Lib/Inc/AI.h"
 
+enum PeonState
+{
+	Idle,
+	Patrol,
+	Engage,
+	Recover,
+	Destroy,
+	Mine,
+	Return
+};
 
 class VisualSensor;
 class Peon : public AI::Agent
@@ -22,6 +32,12 @@ public:
 	void SetFlee(bool active) {    mFleeBehavior->SetActive(active); }
 	void SetSeek(bool active) {    mSeekBehavior->SetActive(active); }
 	void SetWander(bool active) {  mWanderBehavior->SetActive(active); }
+	AI::MemoryRecords GetMemoryRecord() { return mPerceptionModule->GetMemoryRecords(); }
+
+	void Initialize();
+	void Terminate();
+	void ChangeState(PeonState newState);
+	void DebugUI();
 
 
 private:
@@ -39,5 +55,9 @@ private:
 
 	VisualSensor* mVisualSensor = nullptr;
 	std::array<X::TextureId, 16> mTextureIds;
+
+	AI::StateMachine<Peon>* mStateMachine;
+
+
 
 };

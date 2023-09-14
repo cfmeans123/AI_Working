@@ -5,6 +5,7 @@
     <ClInclude Include="Peon.h" />
     <ClInclude Include="Mineral.h" />
     <ClInclude Include="VisualSensor.h" />
+    <ClInclude Include="PeonStates.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp" />

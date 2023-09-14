@@ -7,7 +7,7 @@
 AI::AIWorld aiWorld;
 std::vector<std::unique_ptr<Peon>> peons;
 std::vector<std::unique_ptr<Mineral>> minerals;
-
+//std::unique_ptr<Peon> myPeon;
 
 bool showDebug = false;
 float wanderJitter = 5.0f;
@@ -26,7 +26,9 @@ AI::ArriveBehavior::Deceleration deceleration = AI::ArriveBehavior::Deceleration
 void SpawnPeon()
 {
 	auto& peon = peons.emplace_back(std::make_unique<Peon>(aiWorld));
+	
 	peon->Load();
+	peon->Initialize();
 	peon->ShowDebug(showDebug);
 
 	const float screenWidth = X::GetScreenWidth();
@@ -115,10 +117,48 @@ bool GameLoop(float deltaTime)
 
 	ImGui::End();
 
+	if (X::IsMousePressed(X::Mouse::LBUTTON))
+	{
+		const auto mouseX = static_cast<float>(X::GetMouseScreenX());
+		const auto mouseY = static_cast<float>(X::GetMouseScreenY());
+		const auto destination = X::Math::Vector2(mouseX, mouseY);
+
+		for (auto& peon : peons)
+		{
+			peon->destination = destination;
+		}
+	}
+
 	aiWorld.Update();
+	/*for (auto& peon : peons)
+	{
+		auto neighbors = aiWorld.GetEntitiesInRange({ peon->position, 100.0f }, Types::Invalid);
+		peon->neighbors.clear();
+		for (auto& n : neighbors)
+		{
+			if (n != peon.get())
+			{
+				peon->neighbors.push_back(static_cast<AI::Agent*>(n));
+			}
+		}
+	}*/
+	for (int i = 0; i < minerals.size(); ++i)
+	{
+		for (auto& peon : peons)
+		{
+			if (X::Math::Distance(peon->position, minerals[i]->position) < 2.0f)
+			{
+				//minerals.erase(minerals.at(i));
+				//minerals.at(i) == nullptr;
+				//delete minerals.at(i);
+			}
+		}
+	}
+	
 	for (auto& peon : peons)
 	{
 		peon->Update(deltaTime);
+		peon->DebugUI();
 	}
 	
 	for (auto& peon : peons)

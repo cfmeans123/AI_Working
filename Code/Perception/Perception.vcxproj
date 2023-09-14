@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="Mineral.h" />
     <ClInclude Include="Peon.h" />
+    <ClInclude Include="PeonStates.h" />
     <ClInclude Include="TypeIds.h" />
     <ClInclude Include="VisualSensor.h" />
   </ItemGroup>

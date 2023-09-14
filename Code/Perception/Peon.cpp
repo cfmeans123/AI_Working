@@ -1,7 +1,7 @@
 #include "Peon.h"
 #include "TypeIds.h"
-
 #include "VisualSensor.h"
+#include "PeonStates.h"
 
 extern float wanderJitter;
 extern float wanderRadius;
@@ -42,6 +42,33 @@ namespace
 	}
 }
 
+void Peon::Initialize()
+{
+
+	mStateMachine = new AI::StateMachine<Peon>(*this);
+
+	mStateMachine->AddState<IdleState>();
+	mStateMachine->AddState<PatrolState>();
+	mStateMachine->AddState<EngageState>();
+	mStateMachine->AddState<RecoverState>();
+	mStateMachine->AddState<DestroyState>();
+	mStateMachine->AddState<MineState>();
+	mStateMachine->AddState<ReturnState>();
+	mStateMachine->ChangeState(Idle);
+}
+
+
+void Peon::Terminate()
+{
+	delete mStateMachine;
+	mStateMachine = nullptr;
+}
+
+void Peon::ChangeState(PeonState newState)
+{
+	mStateMachine->ChangeState((int)newState);
+}
+
 
 Peon::Peon(AI::AIWorld& world)
 	: Agent(world, Types::PeonId)
@@ -67,7 +94,7 @@ void Peon::Load()
 	mAlignmentBehavior = mSteeringModule->AddBehavior<AI::AlignmentBehavior>();
 	mCohesionBehavior = mSteeringModule->AddBehavior<AI::CohesionBehavior>();
 
-	mWanderBehavior->SetActive(true);
+	//mWanderBehavior->SetActive(true);
 	mSeparationBehavior->SetActive(true);
 	mAlignmentBehavior->SetActive(true);
 	for (size_t i = 0; i < mTextureIds.size(); ++i)
@@ -85,6 +112,7 @@ void Peon::Unload()
 {
 
 }
+
 
 void Peon::Update(float deltaTime)
 {
@@ -135,10 +163,61 @@ void Peon::Update(float deltaTime)
 
 		std::string score = std::to_string(memory.importance);
 		X::DrawScreenText(score.c_str(), pos.x, pos.y, 12.0f, X::Colors::Wheat);
-
 	}
+	mStateMachine->Update(deltaTime);
+
 }
 
+
+//mVisualSensor->viewRange = viewRange;
+//mVisualSensor->viewHalfAngle = viewAngle * X::Math::kDegToRad;
+//
+//mPerceptionModule->update(deltaTime);
+//
+//if (mWanderBehavior->GetActive())
+//{
+//	mWanderBehavior->Setup(wanderRadius, wanderDistance, wanderJitter);
+//}
+//const auto force = mSteeringModule->Calculate();
+//const auto acceleration = force / mass;
+//velocity += acceleration * deltaTime;
+//if (X::Math::MagnitudeSqr(velocity) > 1.0f)
+//{
+//	heading = X::Math::Normalize(velocity);
+//}
+//
+//position += velocity * deltaTime;
+//
+//const auto screenWidth = X::GetScreenWidth();
+//const auto screenHeight = X::GetScreenHeight();
+//
+//if (position.x < 0.0f)
+//{
+//	position.x += screenWidth;
+//}
+//if (position.x >= screenWidth)
+//{
+//	position.x -= screenWidth;
+//}
+//if (position.y < 0.0f)
+//{
+//	position.y += screenHeight;
+//}
+//if (position.y >= screenHeight)
+//{
+//	position.y -= screenHeight;
+//}
+//
+//const auto& memoryRecords = mPerceptionModule->GetMemoryRecords();
+//for (auto& memory : memoryRecords)
+//{
+//	auto pos = memory.GetProperty<X::Math::Vector2>("lastSeenPosition");
+//	X::DrawScreenLine(position, pos, X::Colors::Red);
+//
+//	std::string score = std::to_string(memory.importance);
+//	X::DrawScreenText(score.c_str(), pos.x, pos.y, 12.0f, X::Colors::Wheat);
+//
+//}
 void Peon::Render()
 {
 	const float angle = atan2(-heading.x, heading.y) + X::Math::kPi;
@@ -158,4 +237,9 @@ void Peon::ShowDebug(bool debug)
 	mSeparationBehavior->ShowDebug(debug);
 	mAlignmentBehavior->ShowDebug(debug);
 	mCohesionBehavior->ShowDebug(debug);
+}
+
+void Peon::DebugUI()
+{
+	mStateMachine->DebugUI();	
 }
