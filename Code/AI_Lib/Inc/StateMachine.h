@@ -42,6 +42,10 @@ namespace AI
 				mCurrentState->DebugUI();
 			}
 		}
+		State<AgentType&>* GetCurrentState()
+		{
+			return mCurrentState;
+		}
 
 	private:
 		AgentType& mAgent;

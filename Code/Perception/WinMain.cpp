@@ -3,11 +3,13 @@
 #include "Mineral.h"
 #include "../Perception/Peon.h"
 #include "../Perception/TypeIds.h"
+#include "../Perception/Hunter.h"
 //--------------------------------------------------
 AI::AIWorld aiWorld;
 std::vector<std::unique_ptr<Peon>> peons;
 std::vector<std::unique_ptr<Mineral>> minerals;
-//std::unique_ptr<Peon> myPeon;
+std::array<X::TextureId, 5> homeTextureIds;
+Hunter targetPeon(aiWorld);
 
 bool showDebug = false;
 float wanderJitter = 5.0f;
@@ -26,7 +28,7 @@ AI::ArriveBehavior::Deceleration deceleration = AI::ArriveBehavior::Deceleration
 void SpawnPeon()
 {
 	auto& peon = peons.emplace_back(std::make_unique<Peon>(aiWorld));
-	
+
 	peon->Load();
 	peon->Initialize();
 	peon->ShowDebug(showDebug);
@@ -48,6 +50,19 @@ void GameInit()
 {
 	aiWorld.Initialize();
 	SpawnPeon();
+	targetPeon.Load();
+	targetPeon.Initialize();
+	targetPeon.SetFlee(false);
+	targetPeon.SetSeek(false);
+	//targetPeon.ChangeState(HunterState::Destroy);
+	targetPeon.position = X::RandomVector2({ 100.0f, 100.0f }, { X::GetScreenWidth() - 100.0f, X::GetScreenHeight() - 100.0f });
+
+	for (size_t i = 0; i < homeTextureIds.size(); ++i)
+	{
+		char name[128];
+		sprintf_s(name, "refinery_%02i.png", i + 1);
+		homeTextureIds[i] = X::LoadTexture(name);
+	}
 
 	for (int i = 0; i < 10; ++i)
 	{
@@ -64,8 +79,6 @@ void GameInit()
 	aiWorld.AddWall({ topRight, bottomRight });
 	aiWorld.AddWall({ bottomLeft, bottomRight });
 	aiWorld.AddWall({ bottomLeft, topLeft });
-
-
 
 }
 
@@ -130,27 +143,22 @@ bool GameLoop(float deltaTime)
 	}
 
 	aiWorld.Update();
-	/*for (auto& peon : peons)
+	if (peons.back()->returnCount > 0)
 	{
-		auto neighbors = aiWorld.GetEntitiesInRange({ peon->position, 100.0f }, Types::Invalid);
-		peon->neighbors.clear();
-		for (auto& n : neighbors)
+		int frame = peons.back()->returnCount;
+		if (frame > 5)
 		{
-			if (n != peon.get())
-			{
-				peon->neighbors.push_back(static_cast<AI::Agent*>(n));
-			}
+			frame = 5;
 		}
-	}*/
+		X::DrawSprite(homeTextureIds[frame], peons.back()->homepos);
+	}
 	for (int i = 0; i < minerals.size(); ++i)
 	{
 		for (auto& peon : peons)
 		{
 			if (X::Math::Distance(peon->position, minerals[i]->position) < 2.0f)
 			{
-				//minerals.erase(minerals.at(i));
-				//minerals.at(i) == nullptr;
-				//delete minerals.at(i);
+				minerals.erase(minerals.begin() + i);
 			}
 		}
 	}
@@ -160,11 +168,13 @@ bool GameLoop(float deltaTime)
 		peon->Update(deltaTime);
 		peon->DebugUI();
 	}
-	
+	targetPeon.DebugUI();
+	targetPeon.Update(deltaTime);
 	for (auto& peon : peons)
 	{
 		peon->Render();
 	}
+	targetPeon.Render();
 	for (auto& mineral : minerals)
 	{
 		mineral->Render();

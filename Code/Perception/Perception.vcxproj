@@ -140,6 +140,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Hunter.h" />
+    <ClInclude Include="HunterStates.h" />
     <ClInclude Include="Mineral.h" />
     <ClInclude Include="Peon.h" />
     <ClInclude Include="PeonStates.h" />
@@ -147,6 +149,7 @@
     <ClInclude Include="VisualSensor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Hunter.cpp" />
     <ClCompile Include="Mineral.cpp" />
     <ClCompile Include="Peon.cpp" />
     <ClCompile Include="VisualSensor.cpp" />

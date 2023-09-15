@@ -6,11 +6,14 @@
     <ClInclude Include="Mineral.h" />
     <ClInclude Include="VisualSensor.h" />
     <ClInclude Include="PeonStates.h" />
+    <ClInclude Include="Hunter.h" />
+    <ClInclude Include="HunterStates.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="Peon.cpp" />
     <ClCompile Include="VisualSensor.cpp" />
     <ClCompile Include="Mineral.cpp" />
+    <ClCompile Include="Hunter.cpp" />
   </ItemGroup>
 </Project>

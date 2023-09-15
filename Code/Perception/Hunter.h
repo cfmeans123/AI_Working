@@ -2,22 +2,19 @@
 
 #include "../AI_Lib/Inc/AI.h"
 
-enum PeonState
+enum HunterState
 {
-	Idle,
-	Patrol,
-	Engage,
-	Recover,
-	Destroy,
-	Mine,
-	Return
+	Idling,
+	Hunting,
+	Chasing,
+	Engaging
 };
 
 class VisualSensor;
-class Peon : public AI::Agent
+class Hunter : public AI::Agent
 {
 public:
-	Peon(AI::AIWorld& world);
+	Hunter(AI::AIWorld& world);
 
 	void Load();
 	void Unload();
@@ -27,16 +24,16 @@ public:
 
 	void ShowDebug(bool debug);
 	void SetArrive(bool active) { mArriveBehavior->SetActive(active); }
-	void SetEvade(bool active) {   mEvadeBehavior->SetActive(active); }
+	void SetEvade(bool active) { mEvadeBehavior->SetActive(active); }
 	void SetPursuit(bool active) { mPursuitBehavior->SetActive(active); }
-	void SetFlee(bool active) {    mFleeBehavior->SetActive(active); }
-	void SetSeek(bool active) {    mSeekBehavior->SetActive(active); }
-	void SetWander(bool active) {  mWanderBehavior->SetActive(active); }
+	void SetFlee(bool active) { mFleeBehavior->SetActive(active); }
+	void SetSeek(bool active) { mSeekBehavior->SetActive(active); }
+	void SetWander(bool active) { mWanderBehavior->SetActive(active); }
 	AI::MemoryRecords GetMemoryRecord() { return mPerceptionModule->GetMemoryRecords(); }
-	AI::StateMachine<Peon>* GetStateMachine() { return mStateMachine; }
+	AI::StateMachine<Hunter>* GetStateMachine() { return mStateMachine; }
 	void Initialize();
 	void Terminate();
-	void ChangeState(PeonState newState);
+	void ChangeState(HunterState newState);
 	void DebugUI();
 	X::Math::Vector2 homepos;
 	int returnCount = 0;
@@ -60,7 +57,7 @@ private:
 	VisualSensor* mVisualSensor = nullptr;
 	std::array<X::TextureId, 16> mTextureIds;
 
-	AI::StateMachine<Peon>* mStateMachine;
+	AI::StateMachine<Hunter>* mStateMachine;
 
 
 

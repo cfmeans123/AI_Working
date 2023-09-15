@@ -8,8 +8,9 @@
 #include "ImGui/Inc/imgui.h"
 
 bool atMineral = false;
+int debugRetCount;
 AI::MemoryRecord target;
-X::Math::Vector2 homepos;
+;
 X::Math::Vector2 lastpos;
 
 
@@ -20,9 +21,8 @@ public:
 	float idleTimer;
 	void Enter(Peon& agent) override
 	{
-
 		idleTimer = 3.0f;
-		homepos = X::RandomVector2({ 100.0f, 100.0f }, { X::GetScreenWidth() - 100.0f, X::GetScreenHeight() - 100.0f });
+		agent.homepos = X::RandomVector2({ 100.0f, 100.0f }, { X::GetScreenWidth() - 100.0f, X::GetScreenHeight() - 100.0f });
 		agent.destination = X::RandomVector2({ 100.0f, 100.0f }, { X::GetScreenWidth() - 100.0f, X::GetScreenHeight() - 100.0f });
 	}
 	void Update(Peon& agent, float deltaTime) override
@@ -46,33 +46,44 @@ public:
 class PatrolState : public AI::State<Peon>
 {
 public:
-	float compare;
+	float compare = 0.0f;
+
 	void Enter(Peon& agent) override
 	{
 		agent.SetSeek(true);
-		//agent.SetArrive(false);		
 	}
 	void Update(Peon& agent, float deltaTime) override
 	{
 		const auto& memoryRecords = agent.GetMemoryRecord();
+		
 		for (auto& memory : memoryRecords)
 		{
-			if (compare == NULL)
-			{
+
 				compare = memory.importance;
-			}
-			else
-			{
+				agent.destination = memory.GetProperty<X::Math::Vector2>("lastSeenPosition");
+
 				if (memory.importance > compare)
 				{
 					target = memory;
 					agent.destination = memory.GetProperty<X::Math::Vector2>("lastSeenPosition");
 				}
-			}
+			
+		}
+		
+		if (X::Math::IsZero(agent.destination - target.GetProperty<X::Math::Vector2>("lastSeenPosition")))
+		{
+			agent.ChangeState(PeonState::Mine);
 		}
 		if (X::Math::Distance(agent.destination, agent.position) < 200.0f)
 		{
-			agent.ChangeState(PeonState::Mine);
+			if (memoryRecords.empty())
+			{
+				agent.ChangeState(PeonState::Recover);
+			}
+			else
+			{
+				agent.ChangeState(PeonState::Mine);
+			}
 		}
 
 	}
@@ -125,6 +136,15 @@ public:
 	}
 	void Update(Peon& agent, float deltaTime) override
 	{
+		const auto& memoryRecords = agent.GetMemoryRecord();
+
+		for (auto& memory : memoryRecords)
+		{
+			if (memory.importance != 0)
+			{
+				agent.ChangeState(PeonState::Patrol);
+			}			
+		}
 		if (X::Math::Distance(agent.destination, agent.position) < 10.0f)
 		{
 			agent.ChangeState(PeonState::Patrol);
@@ -170,7 +190,6 @@ public:
 	}
 	void Update(Peon& agent, float deltaTime) override
 	{
-		
 		if (Distance(agent.destination, agent.position) < 1.0f)
 		{
 			mineTimer -= deltaTime;
@@ -194,7 +213,9 @@ class ReturnState : public AI::State<Peon>
 public:
 	void Enter(Peon& agent) override
 	{
-		agent.destination = homepos;
+		
+		agent.destination = agent.homepos;
+		debugRetCount = agent.returnCount;
 		agent.SetArrive(true);
 	}
 	void Update(Peon& agent, float deltaTime) override
@@ -207,10 +228,19 @@ public:
 	}
 	void Exit(Peon& agent) override
 	{
-
+		if (agent.returnCount >= 5)
+		{
+			agent.ChangeState(PeonState::Destroy);
+		}
+		else
+		{
+			agent.returnCount++;
+		}
+		//agent.returnCount++;
 	}
 	void DebugUI() override
 	{
-		ImGui::Text("Your current state is: ReturnState.");
+		ImGui::Text("Your current state is: ReturnState.\n");
+		ImGui::Text("Your current return cont is: [%d]", debugRetCount);
 	}
 };

@@ -1,7 +1,7 @@
-#include "Peon.h"
+#include "Hunter.h"
 #include "TypeIds.h"
 #include "VisualSensor.h"
-#include "PeonStates.h"
+#include "HunterStates.h"
 
 extern float wanderJitter;
 extern float wanderRadius;
@@ -42,42 +42,38 @@ namespace
 	}
 }
 
-void Peon::Initialize()
+void Hunter::Initialize()
 {
 
-	mStateMachine = new AI::StateMachine<Peon>(*this);
-
-	mStateMachine->AddState<IdleState>();
-	mStateMachine->AddState<PatrolState>();
-	mStateMachine->AddState<EngageState>();
-	mStateMachine->AddState<RecoverState>();
-	mStateMachine->AddState<DestroyState>();
-	mStateMachine->AddState<MineState>();
-	mStateMachine->AddState<ReturnState>();
-	mStateMachine->ChangeState(Idle);
+	mStateMachine = new AI::StateMachine<Hunter>(*this);
+	mStateMachine->AddState<IdlingState>();
+	mStateMachine->AddState<HuntingState>();
+	mStateMachine->AddState<ChasingState>();
+	mStateMachine->AddState<EngagingState>();
+	mStateMachine->ChangeState(Idling);
 }
 
 
-void Peon::Terminate()
+void Hunter::Terminate()
 {
 	delete mStateMachine;
 	mStateMachine = nullptr;
 }
 
-void Peon::ChangeState(PeonState newState)
+void Hunter::ChangeState(HunterState newState)
 {
 	mStateMachine->ChangeState((int)newState);
 }
 
 
 
-Peon::Peon(AI::AIWorld& world)
+Hunter::Hunter(AI::AIWorld& world)
 	: Agent(world, Types::PeonId)
 {
-	
+
 }
 
-void Peon::Load()
+void Hunter::Load()
 {
 	mPerceptionModule = std::make_unique<AI::PerceptionModule>(*this, ComputeImportance);
 	mPerceptionModule->SetMemorySpan(3.0f);
@@ -102,7 +98,7 @@ void Peon::Load()
 	for (size_t i = 0; i < mTextureIds.size(); ++i)
 	{
 		char name[128];
-		sprintf_s(name, "scv_%02i.png", i+1);
+		sprintf_s(name, "scv_%02i.png", i + 1);
 		mTextureIds[i] = X::LoadTexture(name);
 	}
 
@@ -110,13 +106,13 @@ void Peon::Load()
 	radius = (spriteWidth * 0.5f) + 30.0f;
 }
 
-void Peon::Unload()
+void Hunter::Unload()
 {
 
 }
 
 
-void Peon::Update(float deltaTime)
+void Hunter::Update(float deltaTime)
 {
 	mVisualSensor->viewRange = viewRange;
 	mVisualSensor->viewHalfAngle = viewAngle * X::Math::kDegToRad;
@@ -171,56 +167,7 @@ void Peon::Update(float deltaTime)
 }
 
 
-//mVisualSensor->viewRange = viewRange;
-//mVisualSensor->viewHalfAngle = viewAngle * X::Math::kDegToRad;
-//
-//mPerceptionModule->update(deltaTime);
-//
-//if (mWanderBehavior->GetActive())
-//{
-//	mWanderBehavior->Setup(wanderRadius, wanderDistance, wanderJitter);
-//}
-//const auto force = mSteeringModule->Calculate();
-//const auto acceleration = force / mass;
-//velocity += acceleration * deltaTime;
-//if (X::Math::MagnitudeSqr(velocity) > 1.0f)
-//{
-//	heading = X::Math::Normalize(velocity);
-//}
-//
-//position += velocity * deltaTime;
-//
-//const auto screenWidth = X::GetScreenWidth();
-//const auto screenHeight = X::GetScreenHeight();
-//
-//if (position.x < 0.0f)
-//{
-//	position.x += screenWidth;
-//}
-//if (position.x >= screenWidth)
-//{
-//	position.x -= screenWidth;
-//}
-//if (position.y < 0.0f)
-//{
-//	position.y += screenHeight;
-//}
-//if (position.y >= screenHeight)
-//{
-//	position.y -= screenHeight;
-//}
-//
-//const auto& memoryRecords = mPerceptionModule->GetMemoryRecords();
-//for (auto& memory : memoryRecords)
-//{
-//	auto pos = memory.GetProperty<X::Math::Vector2>("lastSeenPosition");
-//	X::DrawScreenLine(position, pos, X::Colors::Red);
-//
-//	std::string score = std::to_string(memory.importance);
-//	X::DrawScreenText(score.c_str(), pos.x, pos.y, 12.0f, X::Colors::Wheat);
-//
-//}
-void Peon::Render()
+void Hunter::Render()
 {
 	const float angle = atan2(-heading.x, heading.y) + X::Math::kPi;
 	const float percent = angle / X::Math::kTwoPi;
@@ -228,7 +175,7 @@ void Peon::Render()
 	X::DrawSprite(mTextureIds[frame], position);
 }
 
-void Peon::ShowDebug(bool debug)
+void Hunter::ShowDebug(bool debug)
 {
 	mWanderBehavior->ShowDebug(debug);
 	mEvadeBehavior->ShowDebug(debug);
@@ -241,7 +188,7 @@ void Peon::ShowDebug(bool debug)
 	mCohesionBehavior->ShowDebug(debug);
 }
 
-void Peon::DebugUI()
+void Hunter::DebugUI()
 {
-	mStateMachine->DebugUI();	
+	mStateMachine->DebugUI();
 }
