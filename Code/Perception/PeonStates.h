@@ -50,7 +50,14 @@ public:
 
 	void Enter(Peon& agent) override
 	{
-		agent.SetSeek(true);
+		if (agent.returnCount > 4)
+		{
+			agent.ChangeState(PeonState::Destroy);
+		}
+		else
+		{
+			agent.SetSeek(true);
+		}
 	}
 	void Update(Peon& agent, float deltaTime) override
 	{
@@ -59,17 +66,17 @@ public:
 		for (auto& memory : memoryRecords)
 		{
 
-				compare = memory.importance;
-				agent.destination = memory.GetProperty<X::Math::Vector2>("lastSeenPosition");
+			compare = memory.importance;
+			agent.destination = memory.GetProperty<X::Math::Vector2>("lastSeenPosition");
 
-				if (memory.importance > compare)
-				{
-					target = memory;
-					agent.destination = memory.GetProperty<X::Math::Vector2>("lastSeenPosition");
-				}
-			
+			if (memory.importance > compare)
+			{
+				target = memory;
+				agent.destination = memory.GetProperty<X::Math::Vector2>("lastSeenPosition");
+			}
+
 		}
-		
+
 		if (X::Math::IsZero(agent.destination - target.GetProperty<X::Math::Vector2>("lastSeenPosition")))
 		{
 			agent.ChangeState(PeonState::Mine);
@@ -109,7 +116,7 @@ public:
 	}
 	void Update(Peon& agent, float deltaTime) override
 	{
-		
+
 	}
 	void Exit(Peon& agent) override
 	{
@@ -132,7 +139,7 @@ public:
 		agent.destination = X::RandomVector2({ 100.0f, 100.0f }, { screenWidth - 100.0f, screenHeight - 100.0f });
 
 		agent.SetSeek(true);
-		
+
 	}
 	void Update(Peon& agent, float deltaTime) override
 	{
@@ -143,7 +150,7 @@ public:
 			if (memory.importance != 0)
 			{
 				agent.ChangeState(PeonState::Patrol);
-			}			
+			}
 		}
 		if (X::Math::Distance(agent.destination, agent.position) < 10.0f)
 		{
@@ -164,7 +171,8 @@ class DestroyState : public AI::State<Peon>
 public:
 	void Enter(Peon& agent) override
 	{
-
+		agent.SetFlee(true);
+		agent.target = dynamic_cast<AI::Agent*>(agent.world.GetEntities().at(0));
 	}
 	void Update(Peon& agent, float deltaTime) override
 	{
@@ -213,7 +221,7 @@ class ReturnState : public AI::State<Peon>
 public:
 	void Enter(Peon& agent) override
 	{
-		
+
 		agent.destination = agent.homepos;
 		debugRetCount = agent.returnCount;
 		agent.SetArrive(true);
@@ -228,15 +236,7 @@ public:
 	}
 	void Exit(Peon& agent) override
 	{
-		if (agent.returnCount >= 5)
-		{
-			agent.ChangeState(PeonState::Destroy);
-		}
-		else
-		{
-			agent.returnCount++;
-		}
-		//agent.returnCount++;
+		agent.returnCount++;
 	}
 	void DebugUI() override
 	{

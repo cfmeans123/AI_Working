@@ -126,6 +126,9 @@
     <ClInclude Include="Inc\Strategy.h">
       <Filter>Inc\GoalBasedDecision</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\ObstacleAvoidanceBehavior.h">
+      <Filter>Inc\Steering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Inc\Precompiled.cpp">
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="Src\GoalComposite.cpp">
       <Filter>Src\GoalBasedDecision</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ObstacleAvoidanceBehavior.cpp">
+      <Filter>Src\Steering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

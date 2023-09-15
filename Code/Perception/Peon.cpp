@@ -94,11 +94,10 @@ void Peon::Load()
 	mSeparationBehavior = mSteeringModule->AddBehavior<AI::SeparationBehavior>();
 	mAlignmentBehavior = mSteeringModule->AddBehavior<AI::AlignmentBehavior>();
 	mCohesionBehavior = mSteeringModule->AddBehavior<AI::CohesionBehavior>();
+	mObstacleAvoidanceBehavior = mSteeringModule->AddBehavior<AI::ObstacleAvoidanceBehavior>();
 
-	//mWanderBehavior->SetActive(true);
-	//mSeparationBehavior->SetActive(true);
-	//mEvadeBehavior->SetActive(true);
-	//mAlignmentBehavior->SetActive(true);
+	mObstacleAvoidanceBehavior->SetActive(true);
+
 	for (size_t i = 0; i < mTextureIds.size(); ++i)
 	{
 		char name[128];
@@ -170,56 +169,6 @@ void Peon::Update(float deltaTime)
 
 }
 
-
-//mVisualSensor->viewRange = viewRange;
-//mVisualSensor->viewHalfAngle = viewAngle * X::Math::kDegToRad;
-//
-//mPerceptionModule->update(deltaTime);
-//
-//if (mWanderBehavior->GetActive())
-//{
-//	mWanderBehavior->Setup(wanderRadius, wanderDistance, wanderJitter);
-//}
-//const auto force = mSteeringModule->Calculate();
-//const auto acceleration = force / mass;
-//velocity += acceleration * deltaTime;
-//if (X::Math::MagnitudeSqr(velocity) > 1.0f)
-//{
-//	heading = X::Math::Normalize(velocity);
-//}
-//
-//position += velocity * deltaTime;
-//
-//const auto screenWidth = X::GetScreenWidth();
-//const auto screenHeight = X::GetScreenHeight();
-//
-//if (position.x < 0.0f)
-//{
-//	position.x += screenWidth;
-//}
-//if (position.x >= screenWidth)
-//{
-//	position.x -= screenWidth;
-//}
-//if (position.y < 0.0f)
-//{
-//	position.y += screenHeight;
-//}
-//if (position.y >= screenHeight)
-//{
-//	position.y -= screenHeight;
-//}
-//
-//const auto& memoryRecords = mPerceptionModule->GetMemoryRecords();
-//for (auto& memory : memoryRecords)
-//{
-//	auto pos = memory.GetProperty<X::Math::Vector2>("lastSeenPosition");
-//	X::DrawScreenLine(position, pos, X::Colors::Red);
-//
-//	std::string score = std::to_string(memory.importance);
-//	X::DrawScreenText(score.c_str(), pos.x, pos.y, 12.0f, X::Colors::Wheat);
-//
-//}
 void Peon::Render()
 {
 	const float angle = atan2(-heading.x, heading.y) + X::Math::kPi;

@@ -165,6 +165,7 @@
     <ClInclude Include="Inc\GridBasedGraph.h" />
     <ClInclude Include="Inc\GroupBehavior.h" />
     <ClInclude Include="Inc\MemoryRecord.h" />
+    <ClInclude Include="Inc\ObstacleAvoidanceBehavior.h" />
     <ClInclude Include="Inc\PerceptionModule.h" />
     <ClInclude Include="Inc\Precompiled.h" />
     <ClInclude Include="Inc\PursuitBehavior.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Src\FleeBehavior.cpp" />
     <ClCompile Include="Src\GoalComposite.cpp" />
     <ClCompile Include="Src\GroupBehavior.cpp" />
+    <ClCompile Include="Src\ObstacleAvoidanceBehavior.cpp" />
     <ClCompile Include="Src\PerceptionModule.cpp" />
     <ClCompile Include="Src\PursuitBehavior.cpp" />
     <ClCompile Include="Src\SeekBehavior.cpp" />

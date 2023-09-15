@@ -36,3 +36,5 @@
 //Perception
 #include "MemoryRecord.h"
 #include "PerceptionModule.h"
+//Obstacle Avoidance
+#include "ObstacleAvoidanceBehavior.h"

@@ -146,9 +146,9 @@ bool GameLoop(float deltaTime)
 	if (peons.back()->returnCount > 0)
 	{
 		int frame = peons.back()->returnCount;
-		if (frame > 5)
+		if (frame > 4)
 		{
-			frame = 5;
+			frame = 4;
 		}
 		X::DrawSprite(homeTextureIds[frame], peons.back()->homepos);
 	}

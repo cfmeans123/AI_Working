@@ -56,6 +56,7 @@ private:
 	AI::SeparationBehavior* mSeparationBehavior = nullptr;
 	AI::AlignmentBehavior* mAlignmentBehavior = nullptr;
 	AI::CohesionBehavior* mCohesionBehavior = nullptr;
+	AI::ObstacleAvoidanceBehavior* mObstacleAvoidanceBehavior = nullptr;
 
 	VisualSensor* mVisualSensor = nullptr;
 	std::array<X::TextureId, 16> mTextureIds;
