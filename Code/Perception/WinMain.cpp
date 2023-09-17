@@ -31,8 +31,9 @@ void SpawnPeon()
 
 	peon->Load();
 	peon->Initialize();
+	
 	peon->ShowDebug(showDebug);
-
+	targetPeon.destination = peon->position;
 	const float screenWidth = X::GetScreenWidth();
 	const float screenHeight = X::GetScreenHeight();
 	peon->position = X::RandomVector2({ 100.0f, 100.0f }, { screenWidth - 100.0f, screenHeight - 100.0f });
@@ -54,6 +55,8 @@ void GameInit()
 	targetPeon.Initialize();
 	targetPeon.SetFlee(false);
 	targetPeon.SetSeek(false);
+	
+
 	//targetPeon.ChangeState(HunterState::Destroy);
 	targetPeon.position = X::RandomVector2({ 100.0f, 100.0f }, { X::GetScreenWidth() - 100.0f, X::GetScreenHeight() - 100.0f });
 
@@ -70,15 +73,13 @@ void GameInit()
 		mineral->Initialize();
 	}
 	aiWorld.AddObstacle({230.0f, 300.0f, 50.0f});
-
-	X::Math::Vector2 topLeft(500.0f, 100.0f);
-	X::Math::Vector2 topRight(600.0f, 100.0f);
-	X::Math::Vector2 bottomLeft(500.0f, 600.0f);
-	X::Math::Vector2 bottomRight(600.0f, 600.0f);
-	aiWorld.AddWall({ topLeft, topRight });
-	aiWorld.AddWall({ topRight, bottomRight });
-	aiWorld.AddWall({ bottomLeft, bottomRight });
-	aiWorld.AddWall({ bottomLeft, topLeft });
+	aiWorld.AddObstacle({ 430.0f, 200.0f, 50.0f });
+	aiWorld.AddObstacle({ 430.0f, 300.0f, 50.0f });
+	aiWorld.AddObstacle({ 430.0f, 400.0f, 50.0f });
+	aiWorld.AddObstacle({ 430.0f, 500.0f, 50.0f });
+	aiWorld.AddObstacle({ 430.0f, 600.0f, 50.0f });
+	aiWorld.AddObstacle({ 830.0f, 700.0f, 50.0f });
+	aiWorld.AddObstacle({ 1230.0f, 500.0f, 50.0f });
 
 }
 
@@ -169,6 +170,7 @@ bool GameLoop(float deltaTime)
 		peon->DebugUI();
 	}
 	targetPeon.DebugUI();
+	targetPeon.destination = peons.front()->position;
 	targetPeon.Update(deltaTime);
 	for (auto& peon : peons)
 	{
